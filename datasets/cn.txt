@@ -1,0 +1,50 @@
+What is a computer network?
+What is LAN?
+What is MAN?
+What is WAN?
+What is topology?
+Types of network topology?
+What is OSI model?
+Explain OSI layers.
+What is TCP/IP model?
+Difference between OSI and TCP/IP?
+What is IP address?
+IPv4 vs IPv6?
+What is subnet mask?
+What is MAC address?
+What is DNS?
+What is DHCP?
+What is HTTP?
+What is HTTPS?
+Difference between HTTP and HTTPS?
+What is FTP?
+What is SMTP?
+What is POP3?
+What is IMAP?
+What is TCP?
+What is UDP?
+Difference between TCP and UDP?
+What is three way handshake?
+What is congestion control?
+What is routing?
+What is switching?
+What is packet switching?
+What is circuit switching?
+What is hub?
+What is switch?
+What is router?
+Difference between hub switch and router?
+What is firewall?
+What is VPN?
+What is NAT?
+What is ARP?
+What is ICMP?
+What is traceroute?
+What is ping?
+What is socket?
+What is bandwidth?
+What is latency?
+What is proxy server?
+What is load balancer?
+What is CDN?
+What is SSL/TLS?

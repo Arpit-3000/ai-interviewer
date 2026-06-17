@@ -1,0 +1,23 @@
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.0
+
+# LangChain
+langchain==0.1.0
+langchain-community==0.0.13
+langchain-groq==0.0.1
+
+# Vector DB & Embeddings
+chromadb==0.4.22
+sentence-transformers==2.3.1
+
+# Document Processing
+pypdf==4.0.1
+
+# Voice (Optional - install if needed)
+# openai-whisper==20231117
+# gtts==2.5.0
+
+# Utilities
+python-dotenv==1.0.0
+python-multipart==0.0.6

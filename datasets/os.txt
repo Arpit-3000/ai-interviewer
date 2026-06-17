@@ -1,0 +1,50 @@
+What is an Operating System?
+What are the functions of an OS?
+What is a process?
+What is a thread?
+Difference between process and thread?
+What is multitasking?
+What is multiprocessing?
+What is context switching?
+What is process scheduling?
+What is CPU scheduling?
+What is FCFS scheduling?
+What is SJF scheduling?
+What is Round Robin Scheduling?
+What is Priority Scheduling?
+What is starvation?
+What is aging?
+What is deadlock?
+Necessary conditions for deadlock?
+How to prevent deadlock?
+What is deadlock avoidance?
+What is Banker's Algorithm?
+What is semaphore?
+What is mutex?
+Difference between mutex and semaphore?
+What is critical section?
+What is race condition?
+What is paging?
+What is segmentation?
+Difference between paging and segmentation?
+What is virtual memory?
+What is demand paging?
+What is page fault?
+What is thrashing?
+What is cache memory?
+What is main memory?
+What is fragmentation?
+Internal vs External Fragmentation?
+What is swapping?
+What is kernel?
+What is user mode and kernel mode?
+What is system call?
+What is interrupt?
+What is IPC?
+Types of IPC?
+What is shared memory?
+What is message queue?
+What is zombie process?
+What is orphan process?
+Difference between multitasking and multithreading?
+What is Linux kernel?

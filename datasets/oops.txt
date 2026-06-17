@@ -1,0 +1,50 @@
+What is Object Oriented Programming?
+What are the four pillars of OOP?
+What is a class?
+What is an object?
+Difference between class and object?
+What is encapsulation?
+What is abstraction?
+What is inheritance?
+What is polymorphism?
+Types of inheritance?
+What is single inheritance?
+What is multiple inheritance?
+What is multilevel inheritance?
+What is hierarchical inheritance?
+What is hybrid inheritance?
+What is method overloading?
+What is method overriding?
+Difference between overloading and overriding?
+What is compile time polymorphism?
+What is runtime polymorphism?
+What is constructor?
+Types of constructors?
+What is default constructor?
+What is parameterized constructor?
+What is copy constructor?
+Can constructor be inherited?
+Can constructor be overridden?
+What is destructor?
+What is this keyword?
+What is super keyword?
+What is static keyword?
+What is final keyword?
+What is abstract class?
+What is interface?
+Difference between abstract class and interface?
+What is association?
+What is aggregation?
+What is composition?
+What is object cloning?
+What is dynamic binding?
+What is message passing?
+What is access modifier?
+Difference between public private and protected?
+What is SOLID principle?
+What is dependency injection?
+What is cohesion?
+What is coupling?
+What is object slicing?
+What are design patterns?
+What is Singleton Design Pattern?

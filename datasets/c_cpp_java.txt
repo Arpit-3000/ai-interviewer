@@ -1,0 +1,50 @@
+What is Java?
+Why Java is platform independent?
+What is JVM?
+What is JRE?
+What is JDK?
+Difference between JDK JRE and JVM?
+What is bytecode?
+What is classloader?
+What is object?
+What is class?
+What is constructor?
+What is inheritance?
+What is polymorphism?
+What is abstraction?
+What is encapsulation?
+What is interface?
+What is abstract class?
+Difference between interface and abstract class?
+What is method overloading?
+What is method overriding?
+What is String?
+Difference between String StringBuilder and StringBuffer?
+What is immutable object?
+What is collection framework?
+What is List?
+What is Set?
+What is Map?
+Difference between ArrayList and LinkedList?
+Difference between HashMap and Hashtable?
+What is HashSet?
+What is TreeSet?
+What is Comparable?
+What is Comparator?
+What is Exception?
+Checked vs Unchecked Exception?
+What is try catch finally?
+What is multithreading?
+What is synchronization?
+What is deadlock?
+What is garbage collection?
+What is Java Stream API?
+What is Lambda Expression?
+What is Functional Interface?
+What is Optional?
+What is Reflection?
+What is Serialization?
+What is Deserialization?
+What is Spring Boot?
+What is Hibernate?
+What are Java 8 features?

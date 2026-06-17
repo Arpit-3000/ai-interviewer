@@ -1,0 +1,99 @@
+{"domain":"DSA","difficulty":"Easy","question":"What is an array?","expected_points":["Linear data structure","Contiguous memory","Index based access","Fixed size"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is a linked list?","expected_points":["Nodes","Data and pointer","Dynamic size","Non-contiguous memory"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"Difference between array and linked list?","expected_points":["Memory allocation","Access time","Insertion","Deletion"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is time complexity?","expected_points":["Measure of running time","Input size","Big O notation","Algorithm efficiency"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is space complexity?","expected_points":["Memory usage","Auxiliary space","Input size","Optimization"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"Explain Big O notation.","expected_points":["Upper bound","Worst case","Growth rate","Complexity analysis"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is linear search?","expected_points":["Sequential search","Check each element","O(n)","Unsorted data"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is binary search?","expected_points":["Sorted array","Divide and conquer","O(log n)","Middle element"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"When can binary search be applied?","expected_points":["Sorted data","Random access","Array","Monotonic condition"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is a stack?","expected_points":["LIFO","Push","Pop","Top element"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is a queue?","expected_points":["FIFO","Enqueue","Dequeue","Front and rear"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"Difference between stack and queue?","expected_points":["LIFO","FIFO","Operations","Use cases"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is recursion?","expected_points":["Function calls itself","Base case","Recursive case","Call stack"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is iteration?","expected_points":["Loops","Repeated execution","No recursive calls","Efficient memory"]}
+
+{"domain":"DSA","difficulty":"Easy","question":"What is hashing?","expected_points":["Hash function","Key value mapping","Fast lookup","Hash table"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is a hash table?","expected_points":["Key value storage","Hash function","Average O(1) lookup","Collision handling"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What are hash collisions?","expected_points":["Same index","Hash conflict","Chaining","Open addressing"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is a tree?","expected_points":["Hierarchical structure","Nodes","Edges","Root"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is a binary tree?","expected_points":["At most two children","Left child","Right child","Tree traversal"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is a Binary Search Tree?","expected_points":["Left smaller","Right greater","Search operation","Ordered tree"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What are tree traversals?","expected_points":["Preorder","Inorder","Postorder","Level order"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is a heap?","expected_points":["Complete binary tree","Heap property","Priority queue","Insertion and deletion"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"Difference between min heap and max heap?","expected_points":["Root value","Ordering","Priority","Applications"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is a graph?","expected_points":["Vertices","Edges","Directed","Undirected"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"Difference between BFS and DFS?","expected_points":["Queue","Stack","Traversal","Applications"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is dynamic programming?","expected_points":["Overlapping subproblems","Optimal substructure","Memoization","Tabulation"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"Difference between memoization and tabulation?","expected_points":["Top down","Bottom up","DP","Storage"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is greedy algorithm?","expected_points":["Local optimum","Greedy choice","Optimization","Examples"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is backtracking?","expected_points":["Try all possibilities","Undo choice","Recursion","Constraint problems"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"Explain merge sort.","expected_points":["Divide and conquer","Merge step","Stable sort","O(n log n)"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"Explain quick sort.","expected_points":["Pivot","Partition","Divide and conquer","Average O(n log n)"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"Difference between merge sort and quick sort?","expected_points":["Space complexity","Stability","Performance","Implementation"]}
+
+{"domain":"DSA","difficulty":"Medium","question":"What is a stable sorting algorithm?","expected_points":["Relative order preserved","Duplicate elements","Merge sort","Applications"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"Explain Dijkstra Algorithm.","expected_points":["Shortest path","Non negative weights","Priority queue","Greedy"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"Explain Bellman Ford Algorithm.","expected_points":["Shortest path","Negative weights","Relaxation","Cycle detection"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"Explain Floyd Warshall Algorithm.","expected_points":["All pairs shortest path","Dynamic programming","Graph","O(V^3)"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is Union Find data structure?","expected_points":["Disjoint sets","Union","Find","Path compression"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"Explain Kruskal Algorithm.","expected_points":["MST","Greedy","Union Find","Sorted edges"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"Explain Prim Algorithm.","expected_points":["MST","Greedy","Priority queue","Growing tree"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is a Trie?","expected_points":["Prefix tree","Strings","Fast search","Dictionary"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is Segment Tree?","expected_points":["Range queries","Tree structure","Updates","O(log n)"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is Fenwick Tree?","expected_points":["Binary Indexed Tree","Prefix sum","Updates","O(log n)"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is an LRU Cache?","expected_points":["Least recently used","HashMap","Doubly linked list","O(1) operations"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is topological sorting?","expected_points":["DAG","Ordering","Dependencies","Kahn algorithm"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is cycle detection in graphs?","expected_points":["DFS","Union Find","Directed graph","Undirected graph"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is Kadane's Algorithm?","expected_points":["Maximum subarray sum","Linear time","Dynamic programming","Running sum"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is sliding window technique?","expected_points":["Subarray problems","Two pointers","Optimization","Linear traversal"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is two pointer technique?","expected_points":["Sorted arrays","Pairs","Optimization","Linear time"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is monotonic stack?","expected_points":["Increasing or decreasing stack","Next greater element","Optimization","Linear complexity"]}
+
+{"domain":"DSA","difficulty":"Hard","question":"What is sparse table?","expected_points":["Range minimum query","Preprocessing","Immutable array","Logarithmic query"]}

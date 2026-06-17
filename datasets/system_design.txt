@@ -1,0 +1,51 @@
+What is System Design?
+Why System Design is important?
+What is scalability?
+Vertical vs Horizontal Scaling?
+What is load balancing?
+What is caching?
+What is CDN?
+What is database replication?
+What is database sharding?
+What is partitioning?
+SQL vs NoSQL?
+What is CAP theorem?
+What is consistency?
+What is availability?
+What is fault tolerance?
+What is redundancy?
+What is microservices architecture?
+What is monolithic architecture?
+Difference between monolith and microservices?
+What is API Gateway?
+What is reverse proxy?
+What is message queue?
+What is Kafka?
+What is RabbitMQ?
+What is eventual consistency?
+What is distributed system?
+What is distributed cache?
+What is Redis?
+What is rate limiting?
+What is circuit breaker?
+What is service discovery?
+What is leader election?
+What is heartbeat mechanism?
+What is database indexing?
+What is bloom filter?
+What is consistent hashing?
+What is data replication?
+What is quorum?
+What is object storage?
+What is distributed lock?
+What is high availability?
+How would you design URL shortener?
+How would you design WhatsApp?
+How would you design Instagram?
+How would you design YouTube?
+How would you design Twitter?
+How would you design Uber?
+How would you design Netflix?
+How would you design Google Drive?
+How would you design Chat Application?
+How would you design Notification System?
