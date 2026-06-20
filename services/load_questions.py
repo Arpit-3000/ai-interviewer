@@ -1,14 +1,12 @@
-from langchain_community.document_loaders import TextLoader
-from langchain_community.vectorstores import Chroma
-from services.embeddings import embedding_model
+"""
+Legacy file - Not used anymore
+Use question_bank_loader.py instead
 
-loader = TextLoader("datasets/dsa.txt")
+This file previously auto-loaded dsa.txt on import.
+Now we use QuestionBankLoader which loads on-demand.
 
-docs = loader.load()
+To rebuild vector database:
+  python rebuild_vector_db.py
+"""
 
-db = Chroma.from_documents(
-    docs,
-    embedding_model,
-    persist_directory="vector_db/questions"
-)
-
+# Not loading anything automatically anymore
