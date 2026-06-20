@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.interview_api import router as interview_router
 from routes.voice_api import router as voice_router
+import os
 
 app = FastAPI(
     title="CodeOrbit AI Interview Service",
