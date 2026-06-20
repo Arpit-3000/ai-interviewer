@@ -7,6 +7,7 @@ pydantic==2.5.0
 langchain==0.1.0
 langchain-community==0.0.13
 langchain-groq==0.0.1
+langchain-huggingface==0.0.1
 
 # Vector Database & Embeddings
 chromadb==0.4.22
@@ -14,17 +15,16 @@ sentence-transformers==2.3.1
 
 # Document Processing
 pypdf==4.0.1
-unstructured==0.10.30
 
 # Utilities
 python-dotenv==1.0.0
 python-multipart==0.0.6
 
+# Additional dependencies for ChromaDB
+pydantic-settings==2.1.0
+typing-extensions>=4.5.0
+
 # Voice Features (Optional - uncomment if needed)
 # openai-whisper==20231117
 # gtts==2.5.0
 # SpeechRecognition==3.10.0
-
-# Additional dependencies for ChromaDB
-pydantic-settings==2.1.0
-typing-extensions>=4.5.0
