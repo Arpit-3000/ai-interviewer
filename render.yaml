@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: codeorbit-ai-service
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: bash build.sh
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT --timeout-keep-alive 0
+    healthCheckPath: /health
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.11"
+    disk:
+      name: vector-db
+      mountPath: /opt/render/project/src/vector_db
+      sizeGB: 1
