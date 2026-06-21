@@ -34,9 +34,14 @@ Please introduce yourself briefly and let me know your name."""
         
         score = evaluation.get("overall_score", 5.0)
         
+        # Use name occasionally (30% of the time) for natural feel
+        use_name = len(session.conversation_history) % 3 == 0  # Every 3rd response
+        name_to_use = candidate_name if (use_name and candidate_name) else ""
+        
         prompt = f"""You are an empathetic interviewer responding to a candidate's answer.
 
 Candidate Name: {candidate_name if candidate_name else "the candidate"}
+Use Name in Response: {"Yes, but naturally" if use_name else "No, skip the name"}
 Question Asked: {last_qa.question if last_qa else ""}
 Candidate's Answer: {answer}
 Answer Score: {score}/10
@@ -49,11 +54,12 @@ Generate a brief, natural response that:
 4. If they answered poorly (score < 4): Be encouraging, like "Let's explore another area"
 
 IMPORTANT:
-- Use their name if available: "{candidate_name}" 
+- {"Use their name: " + name_to_use if use_name and name_to_use else "DON'T use their name this time - be natural"}
 - Keep it under 15 words
-- Be natural and conversational
+- Be natural and conversational like a real human interviewer
 - Don't say "Let's continue the interview" - that's robotic
 - Don't give detailed feedback here - just acknowledge and transition
+- Use the name ONLY occasionally, not in every response
 
 Generate ONLY the response text, nothing else:"""
         
@@ -69,6 +75,10 @@ Generate ONLY the response text, nothing else:"""
         
         # Candidate name if available
         candidate_name = session.resume_context.get("candidate_name", "")
+        
+        # Use name occasionally in questions (20% of the time) for natural conversation
+        questions_asked = len(session.conversation_history)
+        use_name_in_question = questions_asked > 0 and questions_asked % 5 == 0  # Every 5th question
         
         # Resume context
         if session.resume_context:
@@ -112,6 +122,7 @@ Generate ONLY the response text, nothing else:"""
 Context:
 {chr(10).join(context_parts)}
 Candidate Name: {candidate_name if candidate_name else "Not yet provided"}
+Use Name in Question: {"Yes, use it naturally once" if use_name_in_question and candidate_name else "No, don't use name - be natural"}
 
 Current Stage: {session.stage.value}
 Difficulty: {session.difficulty.value}
@@ -130,11 +141,13 @@ Rules:
 - Do NOT repeat previous questions
 - Make it feel like a real interviewer, not a chatbot
 - Be professional but friendly
-- DON'T use generic terms like "candidate" - use their name "{candidate_name}" if you have it
+- DON'T use the candidate's name in EVERY question - only occasionally (like a real human interviewer)
+- {"You may use the name " + candidate_name + " once in this question naturally" if use_name_in_question and candidate_name else "Skip the name in this question"}
 - If at resume discussion stage, ask about specific projects or skills from the resume
 - If coding profile shows weak areas, probe those topics
 - For technical round, ask domain-specific questions (use sample questions as reference)
 - For follow-ups, reference the previous answer
+- Real interviewers don't say the candidate's name in every single question - be natural
 
 Generate the next interview question:"""
         
