@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes.interview_api import router as interview_router
-from routes.voice_api import router as voice_router
+# from routes.interview_api import router as interview_router
+# from routes.voice_api import router as voice_router
 import os
 
 app = FastAPI(
@@ -35,5 +35,5 @@ def health_check():
     }
 
 # Include routers
-app.include_router(interview_router)
-app.include_router(voice_router)
+# app.include_router(interview_router)
+# app.include_router(voice_router)
