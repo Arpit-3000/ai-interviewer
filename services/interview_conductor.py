@@ -2,7 +2,7 @@ from services.llm import llm
 from services.difficulty_adapter import DifficultyAdapter
 from services.question_bank_loader import question_bank_loader
 from models.interview_session import InterviewSession, InterviewStage, InterviewType
-from typing import Optional
+from typing import Optional, Dict
 
 class InterviewConductor:
     """
@@ -12,16 +12,53 @@ class InterviewConductor:
     @staticmethod
     def generate_introduction(session: InterviewSession) -> str:
         """Generate personalized introduction"""
-        name = session.resume_context.get("name", "candidate")
-        
-        intro = f"""Hello {name},
+        # Don't use name from resume in introduction - we'll get it from their response
+        intro = f"""Hello,
 
 I will be conducting your {session.interview_type.value} interview today.
 This interview will assess your technical knowledge, problem-solving ability, and communication skills.
 
-Please introduce yourself briefly."""
+Please introduce yourself briefly and let me know your name."""
         
         return intro
+    
+    @staticmethod
+    def generate_response_to_answer(session: InterviewSession, answer: str, evaluation: Dict) -> str:
+        """Generate contextual response to candidate's answer before asking next question"""
+        candidate_name = session.resume_context.get("candidate_name", "")
+        last_qa = session.conversation_history[-1] if session.conversation_history else None
+        
+        # Check if answer indicates "don't know" or uncertainty
+        dont_know_indicators = ["don't know", "not sure", "i don't", "no idea", "don't remember", "can't recall", "not familiar"]
+        is_uncertain = any(indicator in answer.lower() for indicator in dont_know_indicators)
+        
+        score = evaluation.get("overall_score", 5.0)
+        
+        prompt = f"""You are an empathetic interviewer responding to a candidate's answer.
+
+Candidate Name: {candidate_name if candidate_name else "the candidate"}
+Question Asked: {last_qa.question if last_qa else ""}
+Candidate's Answer: {answer}
+Answer Score: {score}/10
+Is Uncertain/Don't Know: {is_uncertain}
+
+Generate a brief, natural response that:
+1. If they said "I don't know" or showed uncertainty: Be supportive and encouraging, say something like "That's okay, let's move on to another question" or "No worries, let me ask you something different"
+2. If they answered well (score > 7): Acknowledge positively but briefly, like "Good explanation" or "That's a solid understanding"
+3. If they answered partially (score 4-7): Acknowledge their attempt, like "I see your point" or "You're on the right track"
+4. If they answered poorly (score < 4): Be encouraging, like "Let's explore another area"
+
+IMPORTANT:
+- Use their name if available: "{candidate_name}" 
+- Keep it under 15 words
+- Be natural and conversational
+- Don't say "Let's continue the interview" - that's robotic
+- Don't give detailed feedback here - just acknowledge and transition
+
+Generate ONLY the response text, nothing else:"""
+        
+        response = llm.invoke(prompt)
+        return response.content.strip()
     
     @staticmethod
     def generate_question(session: InterviewSession) -> str:
@@ -29,6 +66,9 @@ Please introduce yourself briefly."""
         
         # Build context from session
         context_parts = []
+        
+        # Candidate name if available
+        candidate_name = session.resume_context.get("candidate_name", "")
         
         # Resume context
         if session.resume_context:
@@ -71,6 +111,7 @@ Please introduce yourself briefly."""
 
 Context:
 {chr(10).join(context_parts)}
+Candidate Name: {candidate_name if candidate_name else "Not yet provided"}
 
 Current Stage: {session.stage.value}
 Difficulty: {session.difficulty.value}
@@ -89,6 +130,7 @@ Rules:
 - Do NOT repeat previous questions
 - Make it feel like a real interviewer, not a chatbot
 - Be professional but friendly
+- DON'T use generic terms like "candidate" - use their name "{candidate_name}" if you have it
 - If at resume discussion stage, ask about specific projects or skills from the resume
 - If coding profile shows weak areas, probe those topics
 - For technical round, ask domain-specific questions (use sample questions as reference)
@@ -98,6 +140,25 @@ Generate the next interview question:"""
         
         response = llm.invoke(prompt)
         return response.content.strip()
+    
+    @staticmethod
+    def extract_candidate_name(introduction_answer: str) -> str:
+        """Extract candidate's name from their introduction"""
+        prompt = f"""Extract the candidate's name from their introduction.
+
+Introduction: {introduction_answer}
+
+Rules:
+- Return ONLY the first name or preferred name
+- If they say "My name is John Doe", return "John"
+- If they say "I'm Jane Smith", return "Jane"
+- If no clear name is found, return empty string
+
+Return only the name, nothing else:"""
+        
+        response = llm.invoke(prompt)
+        name = response.content.strip().strip('"').strip("'")
+        return name if name and len(name) < 30 else ""
     
     @staticmethod
     def _get_domain_from_interview_type(interview_type: InterviewType) -> str:

@@ -60,9 +60,10 @@ async def submit_voice_answer(session_id: str, audio: UploadFile = File(...)):
     Complete voice interview flow:
     1. Convert audio to text
     2. Evaluate answer
-    3. Generate next question
-    4. Convert question to speech
-    5. Return both text and audio
+    3. Generate contextual response
+    4. Generate next question
+    5. Convert to speech
+    6. Return both text and audio
     """
     session = session_manager.get_session(session_id)
     
@@ -80,6 +81,13 @@ async def submit_voice_answer(session_id: str, audio: UploadFile = File(...)):
         # Speech to text
         answer_text = speech_service.speech_to_text(temp_audio_path)
         
+        # Extract candidate name from first answer
+        if len(session.conversation_history) == 0 and answer_text:
+            candidate_name = InterviewConductor.extract_candidate_name(answer_text)
+            if candidate_name:
+                session.resume_context = session.resume_context or {}
+                session.resume_context["candidate_name"] = candidate_name
+        
         # Evaluate answer
         evaluation = AnswerEvaluator.evaluate_answer(
             question=session.current_question,
@@ -96,6 +104,11 @@ async def submit_voice_answer(session_id: str, audio: UploadFile = File(...)):
         )
         session.conversation_history.append(qa)
         
+        # Generate contextual response
+        response_to_answer = InterviewConductor.generate_response_to_answer(
+            session, answer_text, evaluation
+        )
+        
         # Generate next question
         next_question = InterviewConductor.generate_question(session)
         session.current_question = next_question
@@ -104,8 +117,11 @@ async def submit_voice_answer(session_id: str, audio: UploadFile = File(...)):
         # Update session
         session_manager.update_session(session_id, session)
         
-        # Convert next question to speech
-        question_audio_path = speech_service.text_to_speech(next_question)
+        # Combine response and next question for speech
+        full_response = f"{response_to_answer} {next_question}"
+        
+        # Convert to speech
+        question_audio_path = speech_service.text_to_speech(full_response)
         
         # Cleanup input audio
         os.remove(temp_audio_path)
@@ -113,6 +129,7 @@ async def submit_voice_answer(session_id: str, audio: UploadFile = File(...)):
         return {
             "transcription": answer_text,
             "evaluation": evaluation,
+            "response_to_answer": response_to_answer,
             "next_question": next_question,
             "audio_url": f"/voice/audio/{os.path.basename(question_audio_path)}",
             "stage": session.stage.value,
@@ -135,3 +152,21 @@ def get_audio_file(filename: str):
         media_type="audio/mpeg",
         filename=filename
     )
+
+@router.post("/stop-speech/{session_id}")
+def stop_speech(session_id: str):
+    """Stop AI speech when interview ends or user interrupts"""
+    session = session_manager.get_session(session_id)
+    
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    try:
+        # Signal to stop any ongoing speech
+        # This will be handled on frontend by stopping audio playback
+        return {
+            "message": "Speech stopped",
+            "session_id": session_id
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

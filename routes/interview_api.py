@@ -105,6 +105,13 @@ def submit_answer(request: AnswerRequest):
         raise HTTPException(status_code=404, detail="Session not found")
     
     try:
+        # Extract candidate name from first answer (introduction)
+        if len(session.conversation_history) == 0 and request.answer:
+            candidate_name = InterviewConductor.extract_candidate_name(request.answer)
+            if candidate_name:
+                session.resume_context = session.resume_context or {}
+                session.resume_context["candidate_name"] = candidate_name
+        
         # Evaluate answer
         evaluation = AnswerEvaluator.evaluate_answer(
             question=session.current_question,
@@ -120,6 +127,11 @@ def submit_answer(request: AnswerRequest):
             timestamp=datetime.now()
         )
         session.conversation_history.append(qa)
+        
+        # Generate contextual response to answer
+        response_to_answer = InterviewConductor.generate_response_to_answer(
+            session, request.answer, evaluation
+        )
         
         # Check if should adjust difficulty
         if DifficultyAdapter.should_adjust(session):
@@ -143,6 +155,7 @@ def submit_answer(request: AnswerRequest):
         
         return {
             "evaluation": evaluation,
+            "response_to_answer": response_to_answer,
             "next_question": next_question,
             "stage": session.stage.value,
             "difficulty": session.difficulty.value,
