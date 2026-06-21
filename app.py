@@ -34,6 +34,6 @@ def health_check():
         "service": "ai-interview-service"
     }
 
-Include routers
+# Include routers
 app.include_router(interview_router)
 # app.include_router(voice_router)
