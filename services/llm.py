@@ -5,4 +5,7 @@ import os
 
 load_dotenv()
 
-llm  = ChatGroq(model = "llama-3.1-8b-instant", api_key = os.getenv('GROQ_API_KEY'));
+# Override with GROQ_MODEL in .env if Groq retires/renames the model again
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b")
+
+llm = ChatGroq(model=GROQ_MODEL, api_key=os.getenv("GROQ_API_KEY"))
