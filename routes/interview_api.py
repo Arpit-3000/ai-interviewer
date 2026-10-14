@@ -122,9 +122,15 @@ def submit_answer(request: AnswerRequest):
         qa = QuestionAnswer(
             question=session.current_question,
             answer=request.answer,
-            score=evaluation.get("overall_score", 5.0),
+            score=evaluation.get("overall_score", 0.0),
             feedback=evaluation.get("feedback", ""),
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
+            stage=session.stage.value,
+            dims={k: evaluation.get(k, 0.0) for k in ("technical_accuracy", "depth", "clarity", "completeness", "communication")},
+            confidence_level=evaluation.get("confidence_level", "medium"),
+            strengths=evaluation.get("strengths", []),
+            weaknesses=evaluation.get("weaknesses", []),
+            evaluated=evaluation.get("evaluated", True),
         )
         session.conversation_history.append(qa)
         

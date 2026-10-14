@@ -45,6 +45,14 @@ class QuestionAnswer(BaseModel):
     score: float
     feedback: str
     timestamp: datetime
+    stage: str = ""
+    # the evaluator's per-dimension scores (technical_accuracy, depth, clarity, completeness, communication)
+    dims: Dict[str, float] = {}
+    confidence_level: str = "medium"
+    strengths: List[str] = []
+    weaknesses: List[str] = []
+    # False when the evaluator's reply couldn't be read; such answers are left out of every average
+    evaluated: bool = True
 
 class InterviewSession(BaseModel):
     session_id: str

@@ -8,11 +8,11 @@ class DifficultyAdapter:
     @staticmethod
     def should_adjust(session: InterviewSession) -> bool:
         """Check if difficulty should be adjusted"""
-        if len(session.conversation_history) < 3:
+        if len([q for q in session.conversation_history if q.evaluated]) < 3:
             return False
         
         # Check last 3 answers
-        recent_scores = [qa.score for qa in session.conversation_history[-3:]]
+        recent_scores = [qa.score for qa in [q for q in session.conversation_history if q.evaluated][-3:]]
         avg_score = sum(recent_scores) / len(recent_scores)
         
         return avg_score > 8.5 or avg_score < 4.0
@@ -20,10 +20,10 @@ class DifficultyAdapter:
     @staticmethod
     def adjust_difficulty(session: InterviewSession) -> DifficultyLevel:
         """Adjust difficulty based on recent performance"""
-        if len(session.conversation_history) < 3:
+        if len([q for q in session.conversation_history if q.evaluated]) < 3:
             return session.difficulty
         
-        recent_scores = [qa.score for qa in session.conversation_history[-3:]]
+        recent_scores = [qa.score for qa in [q for q in session.conversation_history if q.evaluated][-3:]]
         avg_score = sum(recent_scores) / len(recent_scores)
         
         current_diff = session.difficulty

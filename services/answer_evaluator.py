@@ -23,6 +23,14 @@ Candidate's Answer: {answer}
 
 {f"Expected Key Points: {expected_context}" if expected_context else ""}
 
+Be a strict, calibrated grader. Score only what the candidate actually said, not what they might know:
+- 0-2: no answer, "I don't know", off-topic, or wrong
+- 3-4: mostly wrong or very shallow
+- 5-6: partly correct, missing important points
+- 7-8: correct and reasonably complete
+- 9-10: excellent, precise, covers edge cases or trade-offs
+Short or vague answers cannot score above 5. Confidence is "low" when the candidate hedges or says they do not know, "high" only when they answer directly and decisively. If the question was a simple introduction, judge clarity and relevance.
+
 Evaluate the answer on these dimensions (score 0-10 for each):
 
 1. Technical Accuracy: Correctness of the answer
@@ -49,48 +57,65 @@ Return ONLY valid JSON."""
         
         response = llm.invoke(prompt)
         
+        evaluation = None
         try:
-            # Extract JSON from response
-            content = response.content.strip()
-            # Try to find JSON in the response
-            json_match = re.search(r'\{.*\}', content, re.DOTALL)
-            if json_match:
-                evaluation = json.loads(json_match.group())
-            else:
-                evaluation = json.loads(content)
-        except Exception as e:
-            # Fallback evaluation
-            evaluation = {
-                "technical_accuracy": 5.0,
-                "depth": 5.0,
-                "clarity": 5.0,
-                "completeness": 5.0,
-                "communication": 5.0,
-                "overall_score": 5.0,
-                "strengths": ["Response provided"],
-                "weaknesses": ["Could not parse detailed evaluation"],
-                "feedback": "Answer received but detailed evaluation unavailable.",
-                "confidence_level": "medium"
+            match = re.search(r'\{.*\}', response.content.strip(), re.DOTALL)
+            evaluation = json.loads(match.group()) if match else None
+        except Exception:
+            evaluation = None
+
+        dims = ("technical_accuracy", "depth", "clarity", "completeness", "communication")
+        try:
+            clean = {k: max(0.0, min(10.0, float(evaluation[k]))) for k in dims}
+        except Exception:
+            # Unreadable reply: say so, and keep this answer out of the averages instead of inventing a 5/10
+            return {
+                **{k: 0.0 for k in dims},
+                "overall_score": 0.0,
+                "strengths": [],
+                "weaknesses": [],
+                "feedback": "This answer couldn't be scored automatically, so it isn't counted in your results.",
+                "confidence_level": "medium",
+                "evaluated": False,
             }
-        
-        return evaluation
+
+        # The overall score is computed here (not taken from the model) so it always matches the dimensions
+        overall = (
+            0.35 * clean["technical_accuracy"] + 0.20 * clean["depth"] + 0.20 * clean["completeness"]
+            + 0.15 * clean["clarity"] + 0.10 * clean["communication"]
+        )
+        level = str(evaluation.get("confidence_level", "medium")).lower()
+        return {
+            **clean,
+            "overall_score": round(overall, 1),
+            "strengths": [str(x) for x in (evaluation.get("strengths") or [])][:3],
+            "weaknesses": [str(x) for x in (evaluation.get("weaknesses") or [])][:3],
+            "feedback": str(evaluation.get("feedback", "")),
+            "confidence_level": level if level in ("high", "medium", "low") else "medium",
+            "evaluated": True,
+        }
     
     @staticmethod
     def calculate_session_scores(conversation_history) -> Dict[str, float]:
-        """Calculate aggregate scores for the entire session"""
-        if not conversation_history:
-            return {
-                "overall_score": 0.0,
-                "technical_score": 0.0,
-                "communication_score": 0.0,
-                "confidence_score": 0.0
-            }
-        
-        scores = [qa.score for qa in conversation_history]
-        
+        """Aggregate the real per-answer scores. Answers that couldn't be scored are ignored."""
+        scored = [qa for qa in conversation_history if qa.evaluated]
+        if not scored:
+            return {"overall_score": 0.0, "technical_score": 0.0, "communication_score": 0.0, "confidence_score": 0.0}
+
+        mean = lambda xs: round(sum(xs) / len(xs), 2) if xs else 0.0
+
+        # Technical: how correct, deep and complete the answers were, from the technical questions
+        # (the introduction and closing say little about technical ability)
+        tech = [qa for qa in scored if qa.stage not in ("introduction", "closing")] or scored
+        technical = mean([(qa.dims.get("technical_accuracy", 0) + qa.dims.get("depth", 0) + qa.dims.get("completeness", 0)) / 3 for qa in tech])
+        communication = mean([(qa.dims.get("clarity", 0) + qa.dims.get("communication", 0)) / 2 for qa in scored])
+        # Confidence is judged from how the answers read (we only get a transcript, not tone of voice)
+        level_score = {"high": 9.0, "medium": 6.0, "low": 3.0}
+        confidence = mean([level_score.get(qa.confidence_level, 6.0) for qa in scored])
+
         return {
-            "overall_score": round(sum(scores) / len(scores), 2),
-            "technical_score": round(sum(scores) / len(scores), 2),  # Can be calculated separately
-            "communication_score": round(sum(scores) / len(scores) * 0.9, 2),  # Weighted
-            "confidence_score": round(sum(scores) / len(scores) * 0.95, 2)  # Weighted
+            "overall_score": mean([qa.score for qa in scored]),
+            "technical_score": technical,
+            "communication_score": communication,
+            "confidence_score": confidence,
         }

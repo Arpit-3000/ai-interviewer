@@ -1,10 +1,13 @@
 """
 Speech-to-Text and Text-to-Speech Service
-Using OpenAI Whisper for STT and gTTS/ElevenLabs for TTS
+Using Whisper (via Groq) for STT and gTTS/ElevenLabs for TTS
 """
 import os
 from typing import Optional
 import tempfile
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class SpeechService:
     """
@@ -18,13 +21,13 @@ class SpeechService:
         self.stt_enabled = False
         self.tts_enabled = False
         
+        # Speech-to-text runs on Groq's hosted Whisper (same GROQ_API_KEY as the interviewer), so nothing heavy is installed
         try:
-            # Try to import speech libraries
-            import whisper
-            self.whisper_model = whisper.load_model("base")
-            self.stt_enabled = True
+            from groq import Groq
+            self.groq = Groq(api_key=os.getenv("GROQ_API_KEY"))
+            self.stt_enabled = bool(os.getenv("GROQ_API_KEY"))
         except ImportError:
-            print("Warning: Whisper not available. Install with: pip install openai-whisper")
+            print("Warning: groq package not available. Install with: pip install groq")
         
         try:
             from gtts import gTTS
@@ -34,13 +37,19 @@ class SpeechService:
             print("Warning: gTTS not available. Install with: pip install gtts")
     
     def speech_to_text(self, audio_file_path: str) -> str:
-        """Convert audio to text using Whisper"""
+        """Convert audio to text using Whisper on Groq"""
         if not self.stt_enabled:
-            raise Exception("Speech-to-text not available. Install openai-whisper.")
+            raise Exception("Speech-to-text not available. Set GROQ_API_KEY and install groq.")
         
         try:
-            result = self.whisper_model.transcribe(audio_file_path)
-            return result["text"]
+            with open(audio_file_path, "rb") as f:
+                result = self.groq.audio.transcriptions.create(
+                    file=(os.path.basename(audio_file_path), f.read()),
+                    model="whisper-large-v3-turbo",
+                    language="en",
+                    temperature=0,
+                )
+            return (result.text or "").strip()
         except Exception as e:
             raise Exception(f"Speech-to-text error: {str(e)}")
     
